@@ -1,7 +1,7 @@
 install.packages(c("httr","jsonlite")) #Need to install httr and jsonlite
 library(httr) #Need this for your API call
 library(jsonlite) #Need this for translating the data to R
-json_response <- GET("https://comtradeapi.un.org/data/v1/get/C/A/HS?reporterCode=124&period=2016,2017,2018,2019,2020&partnerCode=0&cmdCode=100199&flowCode=X", add_headers("Cache-Control" =  "no-cache","Ocp-Apim-Subscription-Key"= "4c05c9c7506d403c87367b23c3f32295"))
+json_response <- GET("https://comtradeapi.un.org/data/v1/get/C/A/HS?reporterCode=124&period=2016,2017,2018,2019,2020&partnerCode=0&cmdCode=100199&flowCode=X", add_headers("Cache-Control" =  "no-cache","Ocp-Apim-Subscription-Key"= "YOUR_COMTRADE_API_KEY_GOES_HERE"))
 comtrade_data <- fromJSON(content(json_response, as = "text"))$data
 graph_data <- aggregate(comtrade_data$"primaryValue",list(Year=comtrade_data$period),sum)
 
