@@ -11,16 +11,9 @@ comtrade_data <- comtrade(API_key="YOUR API KEY GOES HERE",HS_codes="100199",Exp
 
 #Now make the graph:
 graph_data <- aggregate(comtrade_data$"primaryValue",list(Year=comtrade_data$period),sum)
-#Change the units from USD to billion USD:
-graph_data$x <- graph_data$x/1000000000
-#install a graph package:
-install.packages("ggplot2")
+graph_data$x <- graph_data$x/1000000000 #Change the units from USD to billion USD:
+install.packages("ggplot2") #install a graph package:
 library(ggplot2)
 #Draw a graph
-ggplot(data=graph_data, aes(x=Year, y=x)) +
-  geom_bar(stat="identity",fill="lightblue") +
-  labs(title = "Wheat exports from Canada to World", x = NULL, y = "USD (billion)") +
-  scale_color_brewer(palette = "Dark2") +
-  theme_classic(base_size = 16)
-#Save the graph
-ggsave("graph_Canada_wheat_exports.png",width = 8,height = 4,bg = NULL)
+ggplot(data=graph_data, aes(x=Year, y=x)) + geom_bar(stat="identity",fill="lightblue") + labs(title = "Wheat exports from Canada to World", x = NULL, y = "USD (billion)") + scale_color_brewer(palette = "Dark2") + theme_classic(base_size = 16)
+ggsave("graph_Canada_wheat_exports.png",width = 8,height = 4,bg = NULL) #Save the graph
