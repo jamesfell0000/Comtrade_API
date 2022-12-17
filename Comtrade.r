@@ -1,16 +1,12 @@
-install.packages(c("httr","jsonlite")) #Need to install httr and jsonlite
-library(httr) #Need this for your API call
-library(jsonlite) #Need this for translating the data to R
-API_key <- "YOUR_API_KEY_GOES_HERE"
-years <- "2016,2017,2018,2019,2020"
-HS_code <- "100199"
-Export_or_Import <- "X"
-Partner <- "0"
-Reporter <- "124"
+#This gets wheat exports to the world from Canada in 2016-2020.
 
-url <- paste0("https://comtradeapi.un.org/data/v1/get/C/A/HS?reporterCode=",Reporter,"&period=",years,"&partnerCode=",Partner,"&cmdCode=",HS_code,"&flowCode=",Export_or_Import)
-json_response <- GET(url, add_headers("Cache-Control" =  "no-cache","Ocp-Apim-Subscription-Key"= API_key))
-comtrade_data <- fromJSON(content(json_response, as = "text"))$data
+#Define and comment/uncomment the location of the comtrade.r file you downloaded
+source("/home/USERNAME/comtrade.r") #e.g. on Linux
+#source("C:/Downloads/comtrade.r") #e.g. on Windows
+
+#Note: separate HS_codes with a comma, X for export and M for import, A for annual periodicity and M for monthly periodicity, months can be entered in the period as e.g. 201903 for March 2019.
+comtrade_data <- comtrade(API_key="YOUR API KEY GOES HERE",HS_codes="100199",Export_or_Import="X",Partner="0",Reporter="124",Periodicity="A",Period="2016,2017,2018,2019,2020")
+
 graph_data <- aggregate(comtrade_data$"primaryValue",list(Year=comtrade_data$period),sum)
 
 #Change the units from USD to billion USD:
